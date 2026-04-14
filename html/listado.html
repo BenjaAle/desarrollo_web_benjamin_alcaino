@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Listado Actividades</title>
+    <link rel="stylesheet" href="../style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Comunidad DCC</h1>
+      <nav>
+        <a href="index.html">Inicio</a>
+        <a href="miembros.html">Registro Miembros</a>
+        <a href="actividades.html">Registro Actividades</a>
+        <a href="listado.html">Listado Actividades</a>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h2>Listado de actividades</h2>
+        <p>Busca actividades que realizan los miembros.</p>
+
+        <div class="flex-row">
+          <div>
+            <label for="filtro-tipo">Filtrar por categoría:</label>
+            <select id="filtro-tipo">
+              <option value="Todos">Todos</option>
+              <option value="Recreativa">Recreativa</option>
+              <option value="Artistica">Artística</option>
+              <option value="Deportiva">Deportiva</option>
+              <option value="Tecnologica">Tecnológica</option>
+              <option value="Social">Social</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="ordenar-por">Ordenar por:</label>
+            <select id="ordenar-por">
+              <option value="nombre">Nombre (A-Z)</option>
+              <option value="nombre-desc">Nombre (Z-A)</option>
+              <option value="actividad">Actividad (A-Z)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Listado de Actividades Registradas</h2>
+        <table id="tabla-actividades">
+          <thead>
+            <tr>
+              <th>Nombre Registrador</th>
+              <th>Actividad</th>
+              <th>Categoría</th>
+              <th>Foto</th>
+            </tr>
+          </thead>
+            <tbody id="cuerpo-tabla"></tbody>
+          </table>
+
+        <div class="pagination">
+          <button type="button" id="btn-anterior">Anterior</button>
+          <span id="texto-pagina"></span> <!--Ej: Pagina 1 de 2-->
+          <button type="button" id="btn-siguiente">Siguiente</button>
+        </div>
+      </section></main>
+
+    <script src="../js/listado.js"></script>
+  </body>
+</html>

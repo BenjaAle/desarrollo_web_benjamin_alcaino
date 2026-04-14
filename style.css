@@ -1,0 +1,109 @@
+/* aplicar a todo */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: white;
+  padding: 20px;
+}
+
+header {
+  background-color: black;
+  color: white;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+/*subtitulo del puntero en nav*/
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* layout */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+section {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/*formularios*/
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: black;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #b2b2b2;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid black;
+}
+
+.flex-row {
+  display: flex;
+  gap: 15px;
+}
+
+/*Aplica solo a los hijos de flex-row (mantener espacio)*/
+.flex-row > * {
+  flex: 1;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
