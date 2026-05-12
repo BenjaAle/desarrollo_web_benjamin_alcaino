@@ -1,6 +1,6 @@
 # Sistema de Gestión de Actividades
 
-**CC5002 - Tarea 1**  
+**CC5002 - Tarea 2**  
 **Autor:** Benjamin Alcaino  
 **Fecha de Entrega:** 12/05/2026
 
