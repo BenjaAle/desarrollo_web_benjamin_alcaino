@@ -16,8 +16,8 @@ const validadorNumeros = (num) => {
   return !isNaN(num) && parseInt(num) > 0;
 };
 
-//Lista de archivos tiene al menos 1 elemento
-const validadorArchivos = (files) => files && files.length > 0;
+//Lista de archivos tiene al menos 1 elemento y no más de 5
+const validadorArchivos = (files) => files && files.length > 0 && files.length <= 5;
 
 // Validador de días: verifica que contenga al menos un día válido
 //Acepta  "LUNES, martes Y MIERCOLES"
@@ -81,8 +81,7 @@ const validarFormActividad = () => {
   //Validar días (que contenga al menos un día válido)
   if (!validadorDias(diasInput.value)) {
     diasInput.style.borderColor = "red";
-    msg +=
-      "- Ingresa al menos un día válido (lunes, martes, miércoles, etc.)\n";
+    msg += "- Selecciona un día válido\n";
     isValid = false;
   } else {
     diasInput.style.borderColor = "#ccc";
@@ -116,14 +115,13 @@ const validarFormActividad = () => {
     linkInput.style.borderColor = "#ccc";
   }
 
-  //Validacion final
+  // Validación final
   if (isValid) {
-    alert("¡Actividad registrada exitosamente!");
-    //Limpiar formulario
-    document.getElementById("form-actividad").reset();
+    document.getElementById("errores-js").innerText = ""; // Limpiar
+    document.getElementById("form-actividad").submit();
   } else {
-    //Mostrar errores encontrados
-    alert(msg);
+    // Escribir el error en el html
+    document.getElementById("errores-js").innerText = msg;
   }
 };
 

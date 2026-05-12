@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Registro de Miembros</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+    <header>
+        <h1>Comunidad DCC</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <a href="{{ url_for('registrar_miembro') }}">Registro Miembros</a>
+            <a href="{{ url_for('registrar_actividad') }}">Registro Actividades</a>
+            <a href="{{ url_for('listado') }}">Listado Actividades</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Registro de Nuevo Miembro</h2>
+            <p>Ingresa tus datos para ingresar. Todos los campos son obligatorios.</p>
+            
+            {% if errores %}
+                <div style="color: red; margin-bottom: 15px;">
+                    <ul>
+                        {% for error in errores %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}           
+            
+            <div id="errores-js" style="color: red; white-space: pre-line; margin-bottom: 15px; font-weight: bold;"></div>
+            <form action="{{ url_for('registrar_miembro') }}" method="POST" id="form-miembro">
+                <label for="nombre-miembro">Nombre completo</label>
+                <input id="nombre-miembro" name="nombre" type="text" required>
+                
+                <label for="email-miembro">Correo electrónico</label>
+                <input id="email-miembro" name="email" type="email" required>
+
+                <label for="telefono-miembro">Teléfono</label>
+                <input id="telefono-miembro" name="telefono" type="text" required>
+                
+                <label for="region-miembro">Región (*)</label>
+                <select id="region-miembro" name="region" required>
+                    <option value="">Seleccione una región</option>
+                </select>
+
+                <label for="comuna-miembro">Comuna (*)</label>
+                <select id="comuna-miembro" name="comuna" required>
+                    <option value="">Seleccione su comuna</option>
+                </select>     
+
+                <label for="tipo-miembro">Tipo de miembro</label>
+                <select id="tipo-miembro" name="tipo">
+                    <option value="">Selecciona una opción</option>
+                    <option value="Estudiante">Estudiante Pre/Post grado</option>
+                    <option value="Academico">Académico</option>
+                    <option value="Funcionario">Funcionario</option>
+                </select>
+
+                <div id="datos-extra"></div>
+                <button type="button" id="btn-miembro">Registrar Miembro</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/region_comuna.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/miembros.js') }}"></script>
+</body>
+</html>

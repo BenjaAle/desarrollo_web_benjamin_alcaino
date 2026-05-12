@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Detalle de Actividad</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    >
+  </head>
+  <body>
+    <header>
+      <h1>Comunidad DCC</h1>
+      <nav>
+        <a href="{{ url_for('listado') }}">Volver al Listado</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="center-text">
+        <h2>{{ act.nombre }}</h2>
+        <h3 style="color: #666">Registrado por: {{ act.miembro.nombre }}</h3>
+        <p>Categoría: {{ act.tipo }}</p>
+
+        {% if act.fotos %}
+          {% for foto in act.fotos %}
+          <img
+            src="{{ url_for('static', filename=foto.ruta_archivo) }}"
+            alt="Evidencia"
+            style="max-width: 300px; margin: 20px 0"
+          >
+          {% endfor %}
+        {% else %}
+          <p>Esta actividad no tiene fotos registradas.</p>
+        {% endif %}
+
+        <p>
+          Días y horarios: {{ act.dia }} a las {{ act.hora_inicio }}, {{
+          act.duracion }} hora(s) por semana
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

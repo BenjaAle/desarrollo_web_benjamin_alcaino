@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Registro de Actividades</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    >
+  </head>
+  <body>
+    <header>
+      <h1>Comunidad DCC</h1>
+      <nav>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('registrar_miembro') }}">Registro Miembros</a>
+        <a href="{{ url_for('registrar_actividad') }}">Registro Actividades</a>
+        <a href="{{ url_for('listado') }}">Listado Actividades</a>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h2>Registrar Nueva Actividad</h2>
+        <p>
+          Registra una nueva actividad que vayas a realizar. Los campos marcados
+          con (*) son obligatorios.
+        </p>
+
+        <!--Errores que flask rechaza-->
+        {% if errores %}
+        <div style="color: red; margin-bottom: 15px">
+          <ul>
+            {% for error in errores %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <!--Errores de JS-->
+        <div
+          id="errores-js"
+          style="
+            color: red;
+            white-space: pre-line;
+            margin-bottom: 15px;
+            font-weight: bold;
+          "
+        ></div>
+
+        <form
+          action="{{ url_for('registrar_actividad') }}"
+          method="POST"
+          enctype="multipart/form-data"
+          id="form-actividad"
+        >
+          <label for="miembro-act">Seleccione el Miembro (*)</label>
+          <select id="miembro-act" name="miembro_id" required>
+            <option value="">Selecciona tu nombre</option>
+            {% for m in miembros %}
+            <option value="{{ m.id }}">{{ m.nombre }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="nombre-act">Nombre de la Actividad (*)</label>
+          <input type="text" id="nombre-act" name="nombre_actividad" required>
+
+          <label for="categoria-act">Categoría de la actividad (*)</label>
+          <select id="categoria-act" name="categoria" required>
+            <option value="">Selecciona una categoria</option>
+            <option value="arte">Artística</option>
+            <option value="deporte">Deportiva</option>
+            <option value="tecnología">Tecnológica</option>
+            <option value="social">Social</option>
+            <option value="recreativa">Recreativa</option>
+            <option value="otra">Otra</option>
+          </select>
+
+          <label for="dias-act">Día de la semana (*)</label>
+          <select id="dias-act" name="dia" required>
+            <option value="">Selecciona un día</option>
+            <option value="lunes">Lunes</option>
+            <option value="martes">Martes</option>
+            <option value="miércoles">Miércoles</option>
+            <option value="jueves">Jueves</option>
+            <option value="viernes">Viernes</option>
+            <option value="sábado">Sábado</option>
+            <option value="domingo">Domingo</option>
+          </select>
+
+          <label for="hora-act">Hora de inicio (*)</label>
+          <input id="hora-act" name="hora_inicio" type="time" required>
+
+          <label for="horas-act">Horas semanales dedicadas (*)</label>
+          <input id="horas-act" name="duracion" type="number" required>
+
+          <label for="archivos-act">Foto o video (*)</label>
+          <input
+            id="archivos-act"
+            name="archivos"
+            type="file"
+            multiple
+            accept="image/*,video/*"
+          >
+
+          <label for="link-act">Enlace relacionado (Opcional)</label>
+          <input id="link-act" name="link_relacionado" type="text">
+
+          <button type="button" id="btn-actividad">Guardar Actividad</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/actividades.js') }}"></script>
+  </body>
+</html>

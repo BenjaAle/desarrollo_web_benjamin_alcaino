@@ -4,59 +4,142 @@
 **Autor:** Benjamin Alcaino  
 **Fecha de Entrega:** 14/04/2026
 
+## Descripción del Proyecto
+
+Aplicación web desarrollada con Flask para gestionar actividades y miembros. Permite registrar miembros, crear actividades, listar actividades con filtros y paginación, y visualizar detalles específicos de cada actividad.
+
 ## Estructura de archivos
 
 ```
 Tarea 01/
-├── html/
-│   ├── index.html              # Página principal con indicadores y métricas
-│   ├── miembros.html           # Formulario de registro de miembros
-│   ├── actividades.html        # Formulario de registro de actividades
-│   ├── listado.html            # Listado de actividades
-│   ├── detalle.html            # Detalle de una actividad específica
-├── js/
-│   ├── miembros.js             # Validaciones y lógica de registro de miembros
-│   ├── actividades.js          # Validaciones y lógica de registro de actividades
-│   ├── listado.js              # Filtrado, ordenamiento y paginación de actividades
-├── imagenes/                   # Imágenes de actividades y gráficos
-│   ├── 1.png
-│   ├── 2.png
-│   ├── ajedrez.avif
-│   ├── pintura.avif
-│   ├── futbol.avif
-│   ├── robot.avif
-│   └── libro.avif
-├── style.css                   # Estilos
-└── README.md                   # Este archivo
+├── app.py                      # Aplicación Flask principal
+├── models.py                   # Modelos de datos
+├── requirements.txt            # Dependencias Python
+├── .gitignore                  # Configuración de Git
+├── README.md                   # Este archivo
+│
+├── db/                         # Base de datos (ignorada en Git)
+│   ├── region-comuna.sql       # Script de regiones y comunas
+│   └── tarea2.sql             # Script de base de datos principal
+│
+├── static/                     # Archivos estáticos
+│   ├── css/
+│   │   └── style.css          # Estilos de la aplicación
+│   ├── js/
+│   │   ├── actividades.js     # Validaciones de formulario de actividades
+│   │   ├── miembros.js        # Validaciones de formulario de miembros
+│   │   ├── region_comuna.js   # Lógica de regiones y comunas
+│   │   └── listado.js         # Filtrado, ordenamiento y paginación
+│   ├── imagenes/              # Imágenes estáticas del proyecto
+│   └── uploads/               # Archivos subidos por usuarios (ignorada en Git)
+│
+└── templates/                  # Plantillas HTML de Flask
+    ├── index.html             # Página principal con indicadores
+    ├── miembros.html          # Formulario de registro de miembros
+    ├── actividades.html       # Formulario de registro de actividades
+    ├── listado.html           # Listado de actividades
+    └── detalle.html           # Detalle de una actividad específica
 
 ```
 
-## Detalles o decisiones tomadas
+## Configuración e Instalación
 
-#### Registro de Miembros (miembros.html y miembros.js):
-- Nombre: 3-100 caracteres
-- Email: formato válido (`usuario@dominio.extension`)
-- Tipo de miembro: Obligatorio seleccionar alguno de la lista
-- Campo dinámico: Cambia según el miembro seleccionado (Carrera para estudiante, departamento para académico y cargo para funcionario)
+### Requisitos previos
 
-#### Registro de Actividades (actividades.html y actividades.js):
-- Categoría: Obligatorio seleccionar alguno de la lista
-- Días de la semana: acepta mayusculas, minusculas y separadores (ej: "Lunes, Miércoles y viernEs")
-- Horas semanales: número > 0
-- Archivo (foto/video): Acepta multiples archivos de imagenes y video. Se verifica que haya al menos un archivo
-- Enlace: Opcional
+- Python 3.x
+- pip
 
-#### Listado Actividades (listado.html y listado.js):
-- Se almacenaron en arrays 5 actividades: Ajedrez, Pintura, Fútbol, Robótica y Lectura, para poder filtrar, ordenar y paginar. Los mismos arrays son utilizados en `listado.js` y `detalle.html` para que coincidan con la información. Cada uno tiene un id para poder hacer click y acceder a detalle.html para ver su información.
-- La paginación permite no bajar de la primera página y no superar la ultima página. Se define una variable que es el máximo de elementos por página y se distribuye el total de actividades por página. Esto es compatible con los filtros y ordenamientos
+### Pasos de instalación
 
+1. **Clonar o descargar el proyecto**
 
-#### index.html y detalle.html
+2. **Crear entorno virtual**
 
-No necesitan de un archivo.js debido a que no realizan validaciones. index.html solo muestra dos imagenes estaticas. detalle.html obtiene el id de la actividad a traves de la URL para mostrar su información.
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate  # En Windows
+   ```
 
-## Uso de la página
+3. **Instalar dependencias**
 
-index.html es la página principal y muestra dos imagenes estaticas que representan estadisticas. Para cambiar de secciones, se utiliza la barra de navegación que contiene Registro Miembros, Registro Actividades y Listado Actividades y cada uno manda a su html respectivo. Al seleccionar una actividad en listado de actividades, envia a detalle.html que muestra la informacion de la actividad, y la barra de navegacion cambia para solo mostrar la opcion de volver al listado. Los formularios refrescan los campos una vez que se "guarda" el registro para simular el comportamiento de que se guardó, aunque en realidad no se guardan.
+   ```bash
+   pip install -r requirements.txt
+   ```
 
+4. **Ejecutar la aplicación**
+   ```bash
+   python app.py
+   ```
+   La aplicación estará disponible en `http://localhost:5000`
 
+## Funcionalidades
+
+### Registro de Miembros
+
+- **Nombre:** 3-100 caracteres
+- **Email:** Formato válido (`usuario@dominio.extension`)
+- **Tipo de miembro:** Obligatorio (Estudiante, Académico, Funcionario)
+- **Campo dinámico:** Cambia según el tipo (Carrera para estudiante, Departamento para académico, Cargo para funcionario)
+- Los datos se almacenan en la base de datos
+
+### Registro de Actividades
+
+- **Categoría:** Obligatorio (seleccionar de la lista disponible)
+- **Días de la semana:** Acepta mayúsculas, minúsculas y separadores (ej: "Lunes, Miércoles y viernEs")
+- **Horas semanales:** Número mayor a 0
+- **Archivo:** Acepta múltiples archivos de imágenes y video (al menos uno requerido)
+- **Enlace:** Opcional
+- Los datos se almacenan en la base de datos
+
+### Listado de Actividades
+
+- Visualización de todas las actividades registradas
+- **Filtrado:** Por categoría u otros criterios
+- **Ordenamiento:** Por nombre, fecha, categoría, etc.
+- **Paginación:** Distribución configurable de actividades por página
+- Compatible con filtros y ordenamientos
+
+### Detalle de Actividad
+
+- Visualización completa de información de una actividad
+- Acceso mediante URL con ID de la actividad
+- Opción de volver al listado
+
+### Página de Inicio
+
+- Indicadores y métricas del sistema
+- Navegación principal a las diferentes secciones
+
+## Base de Datos
+
+**Credenciales:** La aplicación utiliza MySQL con las siguientes credenciales:
+
+- **Usuario:** `cc5002`
+- **Contraseña:** `programacionweb`
+- **Host:** `localhost`
+- **Puerto:** `3306`
+- **Base de datos:** `tarea2`
+
+Los scripts SQL necesarios se encuentran en la carpeta `db/`:
+
+- `tarea2.sql` - Esquema principal
+- `region-comuna.sql` - Datos de regiones y comunas
+
+## Tecnologia utilizada
+
+- **Backend:** Flask para manejo de rutas y base de datos
+- **Frontend:** HTML5, CSS3, JavaScript vanilla
+- **Base de datos:** MySQL
+- **Almacenamiento de archivos:** Carpeta `static/uploads/` para archivos subidos por usuarios
+- **Archivos ignorados en Git:** Entorno virtual, caché de Python, uploads, archivos `.db`, `.env`
+
+## Uso de la aplicación
+
+1. **Página de inicio:** Accede a `index.html` con estadísticas
+2. **Navegación:** Usa la barra de navegación para acceder a:
+   - Registro de Miembros
+   - Registro de Actividades
+   - Listado de Actividades
+3. **Registrar información:** Completa los formularios con validaciones en tiempo real
+4. **Ver detalles:** Haz clic en una actividad del listado para ver su información completa
+5. **Volver:** Usa los botones de navegación para volver a secciones anteriores

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Calidad de Vida</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+    <header>
+        <h1>Comunidad DCC</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <a href="{{ url_for('registrar_miembro') }}">Registro Miembros</a>
+            <a href="{{ url_for('registrar_actividad') }}">Registro Actividades</a>
+            <a href="{{ url_for('listado') }}">Listado Actividades</a>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div style="background-color: #d4edda; color: #155724; padding: 15px; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section>
+            <h2>Estadísticas</h2>
+            <div class="flex-row">
+                <div>
+                    <h3>Distribución de Miembros</h3>
+                    <img src="{{ url_for('static', filename='imagenes/1.png') }}" alt="Gráfico de miembros" style="width: 100%;">
+                </div>
+                <div>
+                    <h3>Actividades Populares</h3>
+                    <img src="{{ url_for('static', filename='imagenes/2.png') }}" alt="Gráfico de actividades" style="width: 100%;">
+                </div>
+            </div>
+        </section>
+
+        <section style="margin-top: 40px;">
+            <h2>Últimas 5 Actividades Registradas</h2>
+            <table id="tabla-ultimas-actividades">
+                <thead>
+                    <tr>
+                        <th>Miembro</th>
+                        <th>Actividad</th>
+                        <th>Categoría</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for act in ultimas_actividades %}
+                    <tr onclick="window.location.href='{{ url_for('detalle', id=act.id) }}'" style="cursor: pointer;">
+                        <td>{{ act.miembro.nombre }}</td>
+                        <td>{{ act.nombre }}</td>
+                        <td>{{ act.tipo }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center;">Aún no hay actividades registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+</body>
+</html>
