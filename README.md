@@ -1,12 +1,12 @@
 # Sistema de Gestión de Actividades
 
-**CC5002 - Tarea 2**  
+**CC5002 - Tarea 3**  
 **Autor:** Benjamin Alcaino  
-**Fecha de Entrega:** 12/05/2026
+**Fecha de Entrega:** 12/06/2026
 
 ## Descripción del Proyecto
 
-Aplicación web desarrollada con Flask para gestionar actividades y miembros. Permite registrar miembros, crear actividades, listar actividades con filtros y paginación, y visualizar detalles específicos de cada actividad.
+Aplicación web desarrollada con Flask para gestionar miembros y actividades de la comunidad. Permite registrar miembros, crear actividades, listar actividades con filtros y paginación, visualizar detalles específicos de cada actividad, agregar comentarios y consultar estadísticas.
 
 ## Estructura de archivos
 
@@ -29,7 +29,9 @@ Tarea 01/
 │   │   ├── actividades.js     # Validaciones de formulario de actividades
 │   │   ├── miembros.js        # Validaciones de formulario de miembros
 │   │   ├── region_comuna.js   # Lógica de regiones y comunas
-│   │   └── listado.js         # Filtrado, ordenamiento y paginación
+│   │   ├── listado.js         # Filtrado, ordenamiento y paginación
+│   │   ├── comentarios.js     # Carga y envio de comentarios
+│   │   └── estadisticas.js    # Generación de gráficos con Highcharts
 │   ├── imagenes/              # Imágenes estáticas del proyecto
 │   └── uploads/               # Archivos subidos por usuarios (ignorada en Git)
 │
@@ -39,6 +41,7 @@ Tarea 01/
     ├── actividades.html       # Formulario de registro de actividades
     ├── listado.html           # Listado de actividades
     └── detalle.html           # Detalle de una actividad específica
+    └── estadisticas.html      # Página de gráficos y estadísticas
 
 ```
 
@@ -105,10 +108,25 @@ Tarea 01/
 - Acceso mediante URL con ID de la actividad
 - Opción de volver al listado
 
+### Comentarios
+
+- Cada actividad puede recibir comentarios.
+- Los usuarios pueden agregar nuevos comentarios sin recargar la página.
+- Los comentarios quedan almacenados en la base de datos.
+
+### Estadísticas
+
+**Visualización de gráficos** generados con Highcharts:
+
+- Miembros registrados por día.
+- Actividades agrupadas por tipo.
+- Actividades agrupadas por comuna.
+
 ### Página de Inicio
 
-- Indicadores y métricas del sistema
+- Mensaje de bienvenida
 - Navegación principal a las diferentes secciones
+- Visualización de las últimas actividades registradas.
 
 ## Base de Datos
 
@@ -120,26 +138,74 @@ Tarea 01/
 - **Puerto:** `3306`
 - **Base de datos:** `tarea2`
 
-Los scripts SQL necesarios se encuentran en la carpeta `db/`:
+Scripts SQL ejecutados:
 
 - `tarea2.sql` - Esquema principal
 - `region-comuna.sql` - Datos de regiones y comunas
+- `tabla-comentario.sql`- Tabla con comentarios de las actividades
 
 ## Tecnologia utilizada
 
-- **Backend:** Flask para manejo de rutas y base de datos
-- **Frontend:** HTML5, CSS3, JavaScript vanilla
-- **Base de datos:** MySQL
+- **Backend:** Flask para manejo de rutas y base de datos, SQLAlchemy, MySQL
+- **Frontend:** HTML5, CSS3 y JavaScript vanilla
 - **Almacenamiento de archivos:** Carpeta `static/uploads/` para archivos subidos por usuarios
+- **Externo**: Highcharts para visualización de datos.
 - **Archivos ignorados en Git:** Entorno virtual, caché de Python, uploads, archivos `.db`, `.env`
 
 ## Uso de la aplicación
 
-1. **Página de inicio:** Accede a `index.html` con estadísticas
+1. **Página de inicio:** Accede a `index.html` (página principal)
 2. **Navegación:** Usa la barra de navegación para acceder a:
    - Registro de Miembros
    - Registro de Actividades
    - Listado de Actividades
+   - Estadiísticas
 3. **Registrar información:** Completa los formularios con validaciones en tiempo real
 4. **Ver detalles:** Haz clic en una actividad del listado para ver su información completa
+5. **Añadir comentarios**: Haz clic en una actividad del listado para añadir comentarios
+6. **Consultar estadistícas**: 
 5. **Volver:** Usa los botones de navegación para volver a secciones anteriores
+
+## Cambios realizados con respecto a la versión anterior
+
+1. Nuevos archivos:
+
+   JS:
+   - comentarios.js
+   - estadisticas.js
+   - highcharts.js
+
+   HTML:
+   - estadisticas.html
+
+2. Modificaciones importantes:
+   
+   HTML:
+   - index.html: Ya no muestra imagenes estaticas
+   - detalle.html: Incorporar comentarios
+
+   py:
+   - models.py: Incorporar tabla de comentarios
+   - app.py: Incorporar nuevas rutas asincronicas
+
+3. Sistema de comentarios
+- Incorporación de la entidad Comentario.
+- Relación "uno a muchos" entre Actividad y Comentario.
+- Visualización y creación de comentarios.
+
+4. Nuevas rutas para comunicación asíncrona:
+
+- /api/comentarios/<id>
+- /api/miembros-dia
+- /api/actividades-tipo
+- /api/actividades-comuna
+
+5. Estadísticas
+- Eliminación de imágenes estáticas.
+- Incorporación de gráficos utilizando Highcharts.
+- Obtención de datos desde la base de datos
+
+6. Uso de Fetch
+- Carga dinámica de comentarios.
+- Obtención dinámica de información estadística.
+- Actualización parcial de contenido sin recargar páginas.

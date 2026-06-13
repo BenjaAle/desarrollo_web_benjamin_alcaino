@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" >
     <title>Detalle de Actividad</title>
     <link
       rel="stylesheet"
@@ -22,16 +22,14 @@
         <h3 style="color: #666">Registrado por: {{ act.miembro.nombre }}</h3>
         <p>Categoría: {{ act.tipo }}</p>
 
-        {% if act.fotos %}
-          {% for foto in act.fotos %}
-          <img
-            src="{{ url_for('static', filename=foto.ruta_archivo) }}"
-            alt="Evidencia"
-            style="max-width: 300px; margin: 20px 0"
-          >
-          {% endfor %}
-        {% else %}
-          <p>Esta actividad no tiene fotos registradas.</p>
+        {% if act.fotos %} {% for foto in act.fotos %}
+        <img
+          src="{{ url_for('static', filename=foto.ruta_archivo) }}"
+          alt="Evidencia"
+          style="max-width: 300px; margin: 20px 0"
+        >
+        {% endfor %} {% else %}
+        <p>Esta actividad no tiene fotos registradas.</p>
         {% endif %}
 
         <p>
@@ -39,6 +37,31 @@
           act.duracion }} hora(s) por semana
         </p>
       </section>
+      <hr>
+
+      <h3>Comentarios</h3>
+
+      <div id="lista-comentarios"></div>
+
+      <h3>Agregar comentario</h3>
+
+      <input type="text" id="nombre-comentario" placeholder="Nombre">
+
+      <br><br>
+
+      <textarea id="texto-comentario" rows="4" cols="50"></textarea>
+
+      <br>
+
+      <button id="btn-comentario">Agregar comentario</button>
+
+      <div id="error-comentario"></div>
+
+      <script>
+        const ACTIVIDAD_ID = {{ act.id }};
+      </script>
+
+      <script src="{{ url_for('static', filename='js/comentarios.js') }}"></script>
     </main>
   </body>
 </html>

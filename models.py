@@ -5,10 +5,10 @@ db = SQLAlchemy()
 
 
 class Comuna(db.Model):
-    
-    #Buscar tabla comuna en MySQL
+
+    # Buscar tabla comuna en MySQL
     __tablename__ = "comuna"
-    
+
     # Columnas
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(200), nullable=False)
@@ -17,7 +17,7 @@ class Comuna(db.Model):
 
 class Miembro(db.Model):
     __tablename__ = "miembro"
-    #id que va aumentando con cada miembro agregado
+    # id que va aumentando con cada miembro agregado
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nombre = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(80), nullable=False)
@@ -58,3 +58,16 @@ class Foto(db.Model):
     ruta_archivo = db.Column(db.String(300), nullable=False)
     nombre_archivo = db.Column(db.String(300), nullable=False)
     actividad_id = db.Column(db.Integer, db.ForeignKey("actividad.id"), nullable=False)
+
+
+class Comentario(db.Model):
+    __tablename__ = "comentario"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nombre = db.Column(db.String(80), nullable=False)
+    texto = db.Column(db.String(300), nullable=False)
+    fecha = db.Column(db.DateTime, nullable=False)
+    actividad_id = db.Column(db.Integer, db.ForeignKey("actividad.id"), nullable=False)
+
+    # Conectar actividades con comentarios
+    actividad = db.relationship("Actividad", backref="comentarios", lazy=True)

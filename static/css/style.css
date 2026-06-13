@@ -107,3 +107,12 @@ td {
   align-items: center;
   margin-top: 20px;
 }
+.bienvenida {
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+}
+
+.bienvenida p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}

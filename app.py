@@ -1,7 +1,9 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from werkzeug.utils import secure_filename
-from models import db, Miembro, Actividad, Foto
+from models import db, Miembro, Actividad, Foto, Comentario, Comuna
+from datetime import datetime
+from sqlalchemy import func
 
 app = Flask(__name__)
 # Credenciales indicadas en el enunciado
@@ -158,6 +160,98 @@ def detalle(id):
     act = Actividad.query.get_or_404(id)
     # pasar actividad al html para ver su detalle
     return render_template("detalle.html", act=act)
+
+
+@app.route("/estadisticas")
+def estadisticas():
+    return render_template("estadisticas.html")
+
+# Primer gráfico: cantidad de miembros registrados por día
+@app.route("/api/miembros-dia")
+def miembros_dia():
+
+    datos = (
+        db.session.query(func.date(Miembro.fecha_registro), func.count(Miembro.id))
+        .group_by(func.date(Miembro.fecha_registro))
+        .all()
+    )
+
+    return jsonify(
+        {"dias": [str(x[0]) for x in datos], "cantidades": [x[1] for x in datos]}
+    )
+
+# Segundo gráfico: cantidad de actividades por tipo
+@app.route("/api/actividades-tipo")
+def actividades_tipo():
+
+    datos = (
+        db.session.query(Actividad.tipo, func.count(Actividad.id))
+        .group_by(Actividad.tipo)
+        .all()
+    )
+
+    return jsonify([{"name": tipo, "y": cantidad} for tipo, cantidad in datos])
+
+# Tercer gráfico: cantidad de actividades por comuna
+@app.route("/api/actividades-comuna")
+def actividades_comuna():
+
+    datos = (
+        db.session.query(Comuna.nombre, func.count(Actividad.id))
+        .join(Miembro, Miembro.comuna_id == Comuna.id)
+        .join(Actividad, Actividad.miembro_id == Miembro.id)
+        .group_by(Comuna.nombre)
+        .all()
+    )
+
+    return jsonify(
+        {"comunas": [x[0] for x in datos], "cantidades": [x[1] for x in datos]}
+    )
+
+# Cargar comentarios de una actividad
+@app.route("/api/comentarios/<int:actividad_id>")
+def obtener_comentarios(actividad_id):
+
+    comentarios = (
+        Comentario.query.filter_by(actividad_id=actividad_id)
+        .order_by(Comentario.fecha.desc())
+        .all()
+    )
+
+    return jsonify(
+        [
+            {
+                "nombre": c.nombre,
+                "texto": c.texto,
+                "fecha": c.fecha.strftime("%d-%m-%Y %H:%M"),
+            }
+            for c in comentarios
+        ]
+    )
+
+# Agregar un comentario a una actividad
+@app.route("/api/comentarios/<int:actividad_id>", methods=["POST"])
+def agregar_comentario(actividad_id):
+
+    data = request.get_json()
+
+    nombre = data.get("nombre", "").strip()
+    texto = data.get("texto", "").strip()
+
+    if len(nombre) < 3 or len(nombre) > 80:
+        return jsonify({"error": "Nombre inválido"}), 400
+
+    if len(texto) < 5:
+        return jsonify({"error": "Comentario inválido"}), 400
+
+    comentario = Comentario(
+        nombre=nombre, texto=texto, fecha=datetime.now(), actividad_id=actividad_id
+    )
+
+    db.session.add(comentario)
+    db.session.commit()
+
+    return jsonify({"mensaje": "ok"})
 
 
 if __name__ == "__main__":

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" >
+
+    <title>Estadísticas</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+
+    <!--A veces me tiraba error por número de solicitud a la página asi que descargué el js-->
+    <!--<script src="https://code.highcharts.com/highcharts.js"></script>-->
+  </head>
+
+  <body>
+    <header>
+      <h1>Comunidad DCC</h1>
+
+      <nav>
+        <a href="{{ url_for('index') }}">Inicio</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Estadísticas</h2>
+
+      <div id="grafico-lineas"></div>
+
+      <br>
+
+      <div id="grafico-torta"></div>
+
+      <br>
+
+      <div id="grafico-barras"></div>
+
+      <br>
+
+      <a href="{{ url_for('index') }}"> Volver a la portada </a>
+    </main>
+
+    <!--Comentar si se desea acceder a highcharts desde la url-->
+    <script src="{{ url_for('static', filename='js/highcharts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/estadisticas.js') }}"></script>
+  </body>
+</html>
