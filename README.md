@@ -1,47 +1,77 @@
 # Sistema de Gestión de Actividades
 
-**CC5002 - Tarea 3**  
+**CC5002 - Tarea 4**  
 **Autor:** Benjamin Alcaino  
-**Fecha de Entrega:** 12/06/2026
+**Fecha de Entrega:** 30/06/2026
 
 ## Descripción del Proyecto
 
-Aplicación web desarrollada con Flask para gestionar miembros y actividades de la comunidad. Permite registrar miembros, crear actividades, listar actividades con filtros y paginación, visualizar detalles específicos de cada actividad, agregar comentarios y consultar estadísticas.
+Aplicación web desarrollada con el framework Spring Boot de java para gestionar miembros y actividades de la comunidad. Permite registrar miembros, crear actividades, listar actividades con filtros y paginación, visualizar detalles específicos de cada actividad, agregar comentarios,consultar estadísticas, evaluar actividades con nota y realizar búsquedas dinámicas de actividades.
 
 ## Estructura de archivos
 
 ```
-Tarea 01/
-├── app.py                      # Aplicación Flask principal
-├── models.py                   # Modelos de datos
-├── requirements.txt            # Dependencias Python
-├── .gitignore                  # Configuración de Git
-├── README.md                   # Este archivo
-│
-├── db/                         # Base de datos (ignorada en Git)
-│   ├── region-comuna.sql       # Script de regiones y comunas
-│   └── tarea2.sql             # Script de base de datos principal
-│
-├── static/                     # Archivos estáticos
-│   ├── css/
-│   │   └── style.css          # Estilos de la aplicación
-│   ├── js/
-│   │   ├── actividades.js     # Validaciones de formulario de actividades
-│   │   ├── miembros.js        # Validaciones de formulario de miembros
-│   │   ├── region_comuna.js   # Lógica de regiones y comunas
-│   │   ├── listado.js         # Filtrado, ordenamiento y paginación
-│   │   ├── comentarios.js     # Carga y envio de comentarios
-│   │   └── estadisticas.js    # Generación de gráficos con Highcharts
-│   ├── imagenes/              # Imágenes estáticas del proyecto
-│   └── uploads/               # Archivos subidos por usuarios (ignorada en Git)
-│
-└── templates/                  # Plantillas HTML de Flask
-    ├── index.html             # Página principal con indicadores
-    ├── miembros.html          # Formulario de registro de miembros
-    ├── actividades.html       # Formulario de registro de actividades
-    ├── listado.html           # Listado de actividades
-    └── detalle.html           # Detalle de una actividad específica
-    └── estadisticas.html      # Página de gráficos y estadísticas
+desarrollo_web_benjamin_alcaino
+├─ .mvn
+│  └─ wrapper
+│     └─ maven-wrapper.properties
+├─ mvnw
+├─ mvnw.cmd
+├─ pom.xml
+├─ README.md                              # Este archivo
+└─ src
+   ├─ main
+   │  ├─ java
+   │  │  └─ cc5002
+   │  │     └─ tarea4
+   │  │        ├─ controllers
+   │  │        │  ├─ ApiController.java       # Define rutas para retornar datos
+   │  │        │  └─ AppController.java       # Define rutas para retornar vistas
+   │  │        ├─ models                      # Modelos de la base de datos. Contienen constructores, getters y setters.
+   │  │        │  ├─ Actividad.java
+   │  │        │  ├─ Comentario.java
+   │  │        │  ├─ Comuna.java
+   │  │        │  ├─ Foto.java
+   │  │        │  ├─ Miembro.java
+   │  │        │  ├─ Nota.java
+   │  │        │  └─ Region.java
+   │  │        ├─ repositories                  # Extensiones de JpaRepository para operaciones CRUD
+   │  │        │  ├─ ActividadRepository.java   
+   │  │        │  ├─ ComentarioRepository.java  
+   │  │        │  ├─ ComunaRepository.java      
+   │  │        │  ├─ FotoRepository.java
+   │  │        │  ├─ MiembroRepository.java
+   │  │        │  ├─ NotaRepository.java
+   │  │        │  └─ RegionRepository.java
+   │  │        └─ Tarea4Application.java
+   │  └─ resources
+   │     ├─ application.properties
+   │     ├─ static
+   │     │  ├─ css
+   │     │  │  └─ style.css                     # Estilos de la aplicación
+   │     │  ├─ imagenes                         # Imágenes estáticas del proyecto
+   │     │  │  └─ cadcc.png
+   │     │  └─ js
+   │     │     ├─ actividades.js                # Validaciones de formulario de actividades
+   │     │     ├─ buscador.js                   # Logica de funcionamiento para la barra de busqueda de actividades
+   │     │     ├─ comentarios.js                # Carga y envio de comentarios
+   │     │     ├─ estadisticas.js               # Generación de gráficos con Highcharts
+   │     │     ├─ highcharts.js                 # Codigo js que permite generar graficos dinamicos
+   │     │     ├─ miembros.js                   # Validaciones de formulario de miembros
+   │     │     └─ region_comuna.js              # Lógica de regiones y comunas
+   │     └─ templates                        # Plantillas HTML
+   │        ├─ actividades.html                 # Formulario de registro de actividades
+   │        ├─ buscador.html                    # Buscador de actividades
+   │        ├─ detalle.html                     # Detalle de una actividad específica
+   │        ├─ estadisticas.html                # Página de gráficos y estadísticas
+   │        ├─ index.html                       # Página principal con indicadores
+   │        ├─ listado.html                     # Listado de actividades
+   │        └─ miembros.html                    # Formulario de registro de miembros
+   └─ test
+      └─ java
+         └─ cc5002
+            └─ tarea4
+               └─ Tarea4ApplicationTests.java   # Ejecutar la aplicación
 
 ```
 
@@ -49,33 +79,39 @@ Tarea 01/
 
 ### Requisitos previos
 
-- Python 3.x
-- pip
+- Java 17 o superior
+- Maven
+- Base de datos MySQL local
 
 ### Pasos de instalación
 
 1. **Clonar o descargar el proyecto**
 
-2. **Crear entorno virtual**
+2. **Configurar la base de datos**
 
    ```bash
-   python -m venv venv
-   venv\Scripts\activate  # En Windows
+   Ejecutar scripts SQL para cargar la estructura inicial
    ```
 
 3. **Instalar dependencias**
 
    ```bash
-   pip install -r requirements.txt
+   mvn clean install
    ```
 
 4. **Ejecutar la aplicación**
    ```bash
-   python app.py
+   mvn spring-boot:run
    ```
-   La aplicación estará disponible en `http://localhost:5000`
+   La aplicación estará disponible en `http://localhost:8080`
 
 ## Funcionalidades
+
+### Página de Inicio
+
+- Mensaje de bienvenida
+- Navegación principal a las diferentes secciones
+- Visualización de las últimas actividades registradas.
 
 ### Registro de Miembros
 
@@ -90,6 +126,7 @@ Tarea 01/
 - **Categoría:** Obligatorio (seleccionar de la lista disponible)
 - **Días de la semana:** Acepta mayúsculas, minúsculas y separadores (ej: "Lunes, Miércoles y viernEs")
 - **Horas semanales:** Número mayor a 0
+- **Descripción:** Opcional. Debe contener al menos 3 caracteres
 - **Archivo:** Acepta múltiples archivos de imágenes y video (al menos uno requerido)
 - **Enlace:** Opcional
 - Los datos se almacenan en la base de datos
@@ -106,7 +143,7 @@ Tarea 01/
 
 - Visualización completa de información de una actividad
 - Acceso mediante URL con ID de la actividad
-- Opción de volver al listado
+- Opción de volver al listado de actividades o al inicio
 
 ### Comentarios
 
@@ -122,11 +159,19 @@ Tarea 01/
 - Actividades agrupadas por tipo.
 - Actividades agrupadas por comuna.
 
-### Página de Inicio
+### Buscador dinámico (Nuevo)
 
-- Mensaje de bienvenida
-- Navegación principal a las diferentes secciones
-- Visualización de las últimas actividades registradas.
+- Búsqueda asíncrona que se activa automáticamente al ingresar 3 o más caracteres.
+- Busca coincidencias en nombre de actividad, descripción o comuna.
+- Destaca visualmente el patrón buscado dentro de los resultados.
+- Muestra mensaje amigable si no hay coincidencias.
+
+### Sistema de Evaluación (Nuevo)
+
+- Integrado en los resultados del buscador.
+- Permite evaluar una actividad del 1.0 al 7.0.
+- Guardado asíncrono en la base de datos.
+- Refleja inmediatamente la nota asignada sin recargar la página.
 
 ## Base de Datos
 
@@ -146,11 +191,13 @@ Scripts SQL ejecutados:
 
 ## Tecnologia utilizada
 
-- **Backend:** Flask para manejo de rutas y base de datos, SQLAlchemy, MySQL
+- **Backend:** Java 17, Spring Boot, Spring Data JPA, Spring Web.
+- **Motor de Plantillas:** Thymeleaf.
 - **Frontend:** HTML5, CSS3 y JavaScript vanilla
+- **Base de Datos:** MySQL.
 - **Almacenamiento de archivos:** Carpeta `static/uploads/` para archivos subidos por usuarios
+- **Gestor de dependencias:** Maven (pom.xml).
 - **Externo**: Highcharts para visualización de datos.
-- **Archivos ignorados en Git:** Entorno virtual, caché de Python, uploads, archivos `.db`, `.env`
 
 ## Uso de la aplicación
 
@@ -163,49 +210,19 @@ Scripts SQL ejecutados:
 3. **Registrar información:** Completa los formularios con validaciones en tiempo real
 4. **Ver detalles:** Haz clic en una actividad del listado para ver su información completa
 5. **Añadir comentarios**: Haz clic en una actividad del listado para añadir comentarios
-6. **Consultar estadistícas**: 
+6. **Consultar estadistícas**: Visualiza estadisticas acerca de actividades y miembros
+7. **Busca actividades:** Utiliza la barra de busqueda para encontrar actividades y evaluarlas con una nota.
 5. **Volver:** Usa los botones de navegación para volver a secciones anteriores
 
 ## Cambios realizados con respecto a la versión anterior
 
-1. Nuevos archivos:
+1. **Migración total de framework:** El backend completo fue reescrito de Flask (Python) a Spring Boot (Java), reemplazando SQLAlchemy por Spring Data JPA y Jinja2 por Thymeleaf.
 
-   JS:
-   - comentarios.js
-   - estadisticas.js
-   - highcharts.js
+2. Buscador Asíncrono:
 
-   HTML:
-   - estadisticas.html
+- Creación de buscador.html y buscador.js.
 
-2. Modificaciones importantes:
-   
-   HTML:
-   - index.html: Ya no muestra imagenes estaticas
-   - detalle.html: Incorporar comentarios
+3. Sistema de Evaluación:
 
-   py:
-   - models.py: Incorporar tabla de comentarios
-   - app.py: Incorporar nuevas rutas asincronicas
+- Guardar y actualizar notas por actividad
 
-3. Sistema de comentarios
-- Incorporación de la entidad Comentario.
-- Relación "uno a muchos" entre Actividad y Comentario.
-- Visualización y creación de comentarios.
-
-4. Nuevas rutas para comunicación asíncrona:
-
-- /api/comentarios/<id>
-- /api/miembros-dia
-- /api/actividades-tipo
-- /api/actividades-comuna
-
-5. Estadísticas
-- Eliminación de imágenes estáticas.
-- Incorporación de gráficos utilizando Highcharts.
-- Obtención de datos desde la base de datos
-
-6. Uso de Fetch
-- Carga dinámica de comentarios.
-- Obtención dinámica de información estadística.
-- Actualización parcial de contenido sin recargar páginas.

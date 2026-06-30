@@ -13,11 +13,11 @@
       <h1>Comunidad DCC</h1>
       <nav>
         <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/buscador}">Buscador</a>
         <a th:href="@{/registrar_miembro}">Registro Miembros</a>
         <a th:href="@{/registrar_actividad}">Registro Actividades</a>
         <a th:href="@{/listado}">Listado Actividades</a>
         <a th:href="@{/estadisticas}">Estadísticas</a>
-        <a th:href="@{/buscador}">Buscador</a>
       </nav>
     </header>
 
@@ -69,7 +69,7 @@
             <option value="deporte" th:selected="${categoriaActual == 'deporte'}">Deportiva</option>
             <option value="tecnología" th:selected="${categoriaActual == 'tecnología'}">Tecnológica</option>
             <option value="social" th:selected="${categoriaActual == 'social'}">Social</option>
-            <option value="recreativa" th:selected="${categoriaActual == 'recreativa'}">Recreativa</option>
+            <option value="recreación" th:selected="${categoriaActual == 'recreación'}">Recreativa</option>
             <option value="otra" th:selected="${categoriaActual == 'otra'}">Otra</option>
           </select>
 
@@ -102,6 +102,9 @@
 
           <label for="link-act">Enlace relacionado (Opcional)</label>
           <input id="link-act" name="link_relacionado" type="text">
+
+          <label for="descripcion-act">Descripción de la actividad (Opcional)</label>
+          <textarea id="descripcion-act" name="descripcion" rows="3" cols="50" placeholder="Describe la actividad..."></textarea>
 
           <button type="button" id="btn-actividad">Guardar Actividad</button>
         </form>

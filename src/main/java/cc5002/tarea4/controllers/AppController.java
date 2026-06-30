@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.time.LocalDateTime;
@@ -139,7 +140,8 @@ public class AppController {
             @RequestParam String nombre,
             @RequestParam String email,
             @RequestParam String telefono,
-            @RequestParam Integer comuna
+            @RequestParam Integer comuna,
+            RedirectAttributes redirectAttributes
 
     ) {
 
@@ -156,6 +158,8 @@ public class AppController {
 
         miembroRepository.save(miembro);
 
+        redirectAttributes.addFlashAttribute("mensajeExito", "Miembro registrado exitosamente!");
+
         return "redirect:/";
     }
 
@@ -168,8 +172,10 @@ public class AppController {
             @RequestParam("dia") String dia,
             @RequestParam("hora_inicio") String horaInicio,
             @RequestParam("duracion") String duracion,
+            @RequestParam(value = "descripcion", required = false) String descripcion,
             @RequestParam(value = "archivos", required = false)
-            MultipartFile[] archivos
+            MultipartFile[] archivos,
+            RedirectAttributes redirectAttributes
 
     ) throws IOException {
 
@@ -184,6 +190,7 @@ public class AppController {
         actividad.setDia(dia);
         actividad.setHoraInicio(horaInicio);
         actividad.setDuracion(duracion);
+        actividad.setDescripcion(descripcion);
 
         actividadRepository.save(actividad);
 
@@ -230,6 +237,7 @@ public class AppController {
                 }
             }
         }
+        redirectAttributes.addFlashAttribute("mensajeExito", "Actividad registrada exitosamente!");
 
         return "redirect:/";
     }

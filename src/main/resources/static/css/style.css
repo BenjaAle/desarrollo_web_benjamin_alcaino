@@ -150,6 +150,12 @@ td {
 }
 
 .mensaje-exito {
+    background-color: #d4edda;
     color: green;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+    text-align: center;
     font-weight: bold;
+    border-radius: 5px;
 }

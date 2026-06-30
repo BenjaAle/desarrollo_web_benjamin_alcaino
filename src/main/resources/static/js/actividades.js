@@ -66,6 +66,8 @@ const validarFormActividad = () => {
   //Obtener enlace opcional
   let linkInput = document.getElementById("link-act");
 
+  let descripcionInput = document.getElementById("descripcion-act");
+
   let isValid = true;
   let msg = "Errores en el formulario de actividad:\n";
 
@@ -114,6 +116,21 @@ const validarFormActividad = () => {
   } else {
     linkInput.style.borderColor = "#ccc";
   }
+
+  // Validar descripcion (opcional, pero si se ingresa debe tener al menos 3 caracteres)
+  if (descripcionInput.value.trim().length > 0) { 
+      if (!validadorTexto(descripcionInput.value)) {
+          descripcionInput.style.borderColor = "red";
+          msg += "- La descripción debe tener al menos 3 caracteres\n";
+          isValid = false;
+      } else {
+          descripcionInput.style.borderColor = "#ccc";
+      }
+  } else {
+      // Si está vacía, no hay error.
+      descripcionInput.style.borderColor = "#ccc";
+  }
+
 
   // Validación final
   if (isValid) {

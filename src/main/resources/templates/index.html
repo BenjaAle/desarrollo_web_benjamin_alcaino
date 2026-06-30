@@ -13,15 +13,18 @@
       <h1>Comunidad DCC</h1>
       <nav>
         <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/buscador}">Buscador</a>
         <a th:href="@{/registrar_miembro}">Registro Miembros</a>
         <a th:href="@{/registrar_actividad}">Registro Actividades</a>
         <a th:href="@{/listado}">Listado Actividades</a>
         <a th:href="@{/estadisticas}">Estadísticas</a>
-        <a th:href="@{/buscador}">Buscador</a>
       </nav>
     </header>
 
     <main>
+      <div th:if="${mensajeExito}" class="mensaje-exito">
+          <span th:text="${mensajeExito}">Mensaje genérico</span>
+      </div>
 
       <section class="bienvenida">
         <h2>Bienvenido a Comunidad DCC</h2>
@@ -63,7 +66,10 @@
               <tr th:if="${#lists.isEmpty(ultimas_actividades)}">
                 <td colspan="5" style="text-align: center;">No hay actividades registradas en la base de datos.</td>
               </tr>
-              <tr th:each="act : ${ultimas_actividades}">
+
+              <tr th:each="act : ${ultimas_actividades}"
+                  th:onclick="|window.location='@{/detalle/{id}(id=${act.id})}'|"
+                  style="cursor:pointer;">
                 <td th:text="${act.nombre}">Nombre por defecto</td>
                 <td th:text="${act.tipo}">Tipo</td>
                 <td th:text="${act.dia}">Día</td>

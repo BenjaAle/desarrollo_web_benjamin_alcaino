@@ -12,7 +12,8 @@
     <header>
       <h1>Comunidad DCC</h1>
       <nav>
-        <a th:href="@{/listado}">Volver al Listado</a>
+        <a th:href="@{/}">Volver al inicio</a>
+        <a th:href="@{/listado}">Volver al Listado de Actividades</a>
       </nav>
     </header>
 
@@ -29,6 +30,11 @@
         <p>
           Categoría: 
           <span th:text="${act.tipo}">Tipo</span>
+        </p>
+
+        <p th:if="${act.descripcion != null and !act.descripcion.isEmpty()}">
+          <strong>Descripción:</strong> 
+          <span th:text="${act.descripcion}">Descripción de la actividad</span>
         </p>
 
         <div th:if="${not #lists.isEmpty(act.fotos)}">
