@@ -45,6 +45,7 @@ Thumbs.db
 # Archivos generados/uploads
 static/uploads/*
 !static/uploads/.gitkeep
+src/main/resources/static/uploads/*
 
 # Variables de entorno
 .env
