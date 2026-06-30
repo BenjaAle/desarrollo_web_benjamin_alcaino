@@ -1,0 +1,78 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" >
+    <title>Calidad de Vida</title>
+    <link
+      rel="stylesheet"
+      th:href="@{/css/style.css}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Comunidad DCC</h1>
+      <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/registrar_miembro}">Registro Miembros</a>
+        <a th:href="@{/registrar_actividad}">Registro Actividades</a>
+        <a th:href="@{/listado}">Listado Actividades</a>
+        <a th:href="@{/estadisticas}">Estadísticas</a>
+        <a th:href="@{/buscador}">Buscador</a>
+      </nav>
+    </header>
+
+    <main>
+
+      <section class="bienvenida">
+        <h2>Bienvenido a Comunidad DCC</h2>
+
+        <img
+          th:src="@{/imagenes/cadcc.png}"
+          alt="Comunidad DCC"
+          style="width: 20%; display: block; margin: 20px auto"/>
+
+        <p>
+          Este sitio permite registrar y compartir actividades realizadas por
+          los miembros de la comunidad.
+        </p>
+
+        <p>
+          El objetivo de esta plataforma es mantener un historial organizado de
+          las actividades realizadas.
+        </p>
+
+        <p>
+          Utiliza el menú de navegación superior para acceder a las distintas
+          funcionalidades del sistema.
+        </p>
+      </section>
+
+      <section style="margin-top: 40px">
+        <h2>Últimas 5 Actividades Registradas</h2>
+        <table id="tabla-ultimas-actividades">
+          <thead>
+            <tr>
+              <th>Nombre Actividad</th>
+              <th>Categoría</th>
+              <th>Día</th>
+              <th>Miembro</th>
+              <th>Comuna</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr th:if="${#lists.isEmpty(ultimas_actividades)}">
+                <td colspan="5" style="text-align: center;">No hay actividades registradas en la base de datos.</td>
+              </tr>
+              <tr th:each="act : ${ultimas_actividades}">
+                <td th:text="${act.nombre}">Nombre por defecto</td>
+                <td th:text="${act.tipo}">Tipo</td>
+                <td th:text="${act.dia}">Día</td>
+                <td th:text="${act.miembro.nombre}">Miembro</td>
+                <td th:text="${act.miembro.comuna.nombre}">Comuna</td>
+              </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+</html>

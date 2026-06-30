@@ -1,0 +1,104 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" >
+    <title>Detalle de Actividad</title>
+    <link
+      rel="stylesheet"
+      th:href="@{/css/style.css}"
+    >
+  </head>
+  <body>
+    <header>
+      <h1>Comunidad DCC</h1>
+      <nav>
+        <a th:href="@{/listado}">Volver al Listado</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="center-text">
+        <h2 th:text="${act.nombre}">
+            Nombre actividad
+        </h2>
+        <h3
+            style="color:#666"
+            th:text="'Registrado por: ' + ${act.miembro.nombre}">
+            Registrado por
+        </h3>
+        <p>
+          Categoría: 
+          <span th:text="${act.tipo}">Tipo</span>
+        </p>
+
+        <div th:if="${not #lists.isEmpty(act.fotos)}">
+
+            <img
+                th:each="foto : ${act.fotos}"
+                th:src="@{${foto.rutaArchivo}}"
+                alt="Evidencia"
+                style="max-width:300px; margin:20px 0;">
+
+        </div>
+
+        <p th:if="${#lists.isEmpty(act.fotos)}">
+            Esta actividad no tiene fotos registradas.
+        </p>
+
+        <p>
+
+            Días y horarios:
+
+            <span th:text="${act.dia}"></span>
+
+            a las
+
+            <span th:text="${act.horaInicio}"></span>,
+
+            <span th:text="${act.duracion}"></span>
+
+            hora(s) por semana.
+
+        </p>
+      </section>
+      <hr>
+
+    <h3>Comentarios</h3>
+
+    <div id="lista-comentarios"></div>
+
+    <h3>Agregar comentario</h3>
+
+    <input
+        type="text"
+        id="nombre-comentario"
+        placeholder="Nombre">
+
+    <br><br>
+
+    <textarea
+        id="texto-comentario"
+        rows="4"
+        cols="50">
+    </textarea>
+
+    <br>
+
+    <button id="btn-comentario">
+        Agregar comentario
+    </button>
+
+    <div id="error-comentario"></div>
+
+    <script th:inline="javascript">
+
+        const ACTIVIDAD_ID = [[${act.id}]];
+
+    </script>
+
+    <script th:src="@{/js/comentarios.js}"></script>
+
+</main>
+
+</body>
+</html>

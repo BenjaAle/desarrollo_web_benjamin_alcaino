@@ -1,22 +1,23 @@
 <!doctype html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <title>Registro de Actividades</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
+      th:href="@{/css/style.css}"
     >
   </head>
   <body>
     <header>
       <h1>Comunidad DCC</h1>
       <nav>
-        <a href="{{ url_for('index') }}">Inicio</a>
-        <a href="{{ url_for('registrar_miembro') }}">Registro Miembros</a>
-        <a href="{{ url_for('registrar_actividad') }}">Registro Actividades</a>
-        <a href="{{ url_for('listado') }}">Listado Actividades</a>
-        <a href="{{ url_for('estadisticas') }}">Estadísticas</a>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/registrar_miembro}">Registro Miembros</a>
+        <a th:href="@{/registrar_actividad}">Registro Actividades</a>
+        <a th:href="@{/listado}">Listado Actividades</a>
+        <a th:href="@{/estadisticas}">Estadísticas</a>
+        <a th:href="@{/buscador}">Buscador</a>
       </nav>
     </header>
 
@@ -28,16 +29,12 @@
           con (*) son obligatorios.
         </p>
 
-        <!--Errores que flask rechaza-->
-        {% if errores %}
-        <div style="color: red; margin-bottom: 15px">
+        <!--Errores que Spring rechaza-->
+        <div th:if="${not #lists.isEmpty(errores)}" style="color: red; margin-bottom: 15px">
           <ul>
-            {% for error in errores %}
-            <li>{{ error }}</li>
-            {% endfor %}
+            <li th:each="error : ${errores}" th:text="${error}"></li>
           </ul>
         </div>
-        {% endif %}
 
         <!--Errores de JS-->
         <div
@@ -51,7 +48,7 @@
         ></div>
 
         <form
-          action="{{ url_for('registrar_actividad') }}"
+          th:action="@{/registrar_actividad}"
           method="POST"
           enctype="multipart/form-data"
           id="form-actividad"
@@ -59,9 +56,7 @@
           <label for="miembro-act">Seleccione el Miembro (*)</label>
           <select id="miembro-act" name="miembro_id" required>
             <option value="">Selecciona tu nombre</option>
-            {% for m in miembros %}
-            <option value="{{ m.id }}">{{ m.nombre }}</option>
-            {% endfor %}
+            <option th:each="m : ${miembros}" th:value="${m.id}" th:text="${m.nombre}"></option>
           </select>
 
           <label for="nombre-act">Nombre de la Actividad (*)</label>
@@ -70,24 +65,24 @@
           <label for="categoria-act">Categoría de la actividad (*)</label>
           <select id="categoria-act" name="categoria" required>
             <option value="">Selecciona una categoria</option>
-            <option value="arte">Artística</option>
-            <option value="deporte">Deportiva</option>
-            <option value="tecnología">Tecnológica</option>
-            <option value="social">Social</option>
-            <option value="recreativa">Recreativa</option>
-            <option value="otra">Otra</option>
+            <option value="arte" th:selected="${categoriaActual == 'arte'}">Artística</option>
+            <option value="deporte" th:selected="${categoriaActual == 'deporte'}">Deportiva</option>
+            <option value="tecnología" th:selected="${categoriaActual == 'tecnología'}">Tecnológica</option>
+            <option value="social" th:selected="${categoriaActual == 'social'}">Social</option>
+            <option value="recreativa" th:selected="${categoriaActual == 'recreativa'}">Recreativa</option>
+            <option value="otra" th:selected="${categoriaActual == 'otra'}">Otra</option>
           </select>
 
           <label for="dias-act">Día de la semana (*)</label>
           <select id="dias-act" name="dia" required>
             <option value="">Selecciona un día</option>
-            <option value="lunes">Lunes</option>
-            <option value="martes">Martes</option>
-            <option value="miércoles">Miércoles</option>
-            <option value="jueves">Jueves</option>
-            <option value="viernes">Viernes</option>
-            <option value="sábado">Sábado</option>
-            <option value="domingo">Domingo</option>
+            <option value="lunes" th:selected="${diaActual == 'lunes'}">Lunes</option>
+            <option value="martes" th:selected="${diaActual == 'martes'}">Martes</option>
+            <option value="miércoles" th:selected="${diaActual == 'miércoles'}">Miércoles</option>
+            <option value="jueves" th:selected="${diaActual == 'jueves'}">Jueves</option>
+            <option value="viernes" th:selected="${diaActual == 'viernes'}">Viernes</option>
+            <option value="sábado" th:selected="${diaActual == 'sábado'}">Sábado</option>
+            <option value="domingo" th:selected="${diaActual == 'domingo'}">Domingo</option>
           </select>
 
           <label for="hora-act">Hora de inicio (*)</label>
@@ -113,6 +108,6 @@
       </section>
     </main>
 
-    <script src="{{ url_for('static', filename='js/actividades.js') }}"></script>
+    <script th:src="@{/js/actividades.js}"></script>
   </body>
 </html>

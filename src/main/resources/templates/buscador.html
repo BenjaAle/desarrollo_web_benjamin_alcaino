@@ -1,0 +1,55 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Buscador - Comunidad DCC</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        /* Resaltar el texto buscado */
+        mark { background-color: yellow; padding: 0 2px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Comunidad DCC</h1>
+        <nav>
+            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/registrar_miembro}">Registro Miembros</a>
+            <a th:href="@{/registrar_actividad}">Registro Actividades</a>
+            <a th:href="@{/listado}">Listado Actividades</a>
+            <a th:href="@{/estadisticas}">Estadísticas</a>
+            <a th:href="@{/buscador}">Buscador</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Buscador de Actividades</h2>
+            <p>Escribe al menos 3 caracteres para buscar por nombre, descripción o comuna:</p>
+            <input type="text" id="input-buscador" placeholder="Buscar..." autocomplete="off">
+        </section>
+
+        <section id="seccion-resultados" style="display: none; margin-top: 20px;">
+            <h3>Resultados:</h3>
+            <div id="mensaje-resultados"></div> <table id="tabla-resultados">
+                <thead>
+                    <tr>
+                        <th>Miembro</th>
+                        <th>Día</th>
+                        <th>Tipo</th>
+                        <th>Comuna</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Nota</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="body-resultados">
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script th:src="@{/js/buscador.js}"></script>
+</body>
+</html>

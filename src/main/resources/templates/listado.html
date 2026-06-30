@@ -1,0 +1,238 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Listado Actividades</title>
+
+    <link
+            rel="stylesheet"
+            th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header>
+
+    <h1>Comunidad DCC</h1>
+
+    <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/registrar_miembro}">Registro Miembros</a>
+        <a th:href="@{/registrar_actividad}">Registro Actividades</a>
+        <a th:href="@{/listado}">Listado Actividades</a>
+        <a th:href="@{/estadisticas}">Estadísticas</a>
+        <a th:href="@{/buscador}">Buscador</a>
+    </nav>
+
+</header>
+
+<main>
+
+    <section>
+
+        <h2>Listado de actividades</h2>
+
+        <p>Busca actividades que realizan los miembros.</p>
+
+        <form th:action="@{/listado}" method="get" class="flex-row">
+
+            <div>
+
+                <label for="filtro-tipo">Filtrar por categoría:</label>
+
+                <select id="filtro-tipo" name="categoria">
+                    <option value="Todos" th:selected="${categoria_actual == 'Todos'}">Todos</option>
+                    <option value="arte" th:selected="${categoria_actual == 'arte'}">Artística</option>
+                    <option value="deporte" th:selected="${categoria_actual == 'deporte'}">Deportiva</option>
+                    <option value="tecnología" th:selected="${categoria_actual == 'tecnología'}">Tecnológica</option>
+                    <option value="social" th:selected="${categoria_actual == 'social'}">Social</option>
+                    <option value="recreación" th:selected="${categoria_actual == 'recreación'}">Recreativa</option>
+                    <option value="otra" th:selected="${categoria_actual == 'otra'}">Otra</option>
+                </select>
+
+            </div>
+
+            <div>
+
+                <label for="ordenar-por">Ordenar por:</label>
+
+                <select id="ordenar-por" name="orden">
+                    <option value="nombre" th:selected="${ordenActual == 'nombre'}">Nombre Miembro (A-Z)</option>
+                    <option value="nombre-desc" th:selected="${ordenActual == 'nombre-desc'}">Nombre Miembro (Z-A)</option>
+                    <option value="actividad" th:selected="${ordenActual == 'actividad'}">Actividad (A-Z)</option>
+                </select>
+
+            </div>
+
+            <div style="align-self:flex-end;">
+                <button type="submit">
+                    Aplicar filtros
+                </button>
+            </div>
+
+        </form>
+
+    </section>
+
+    <section>
+
+        <h2>Listado de Actividades Registradas</h2>
+
+        <table id="tabla-actividades">
+
+            <thead>
+
+            <tr>
+                <th>Nombre Registrador</th>
+                <th>Actividad</th>
+                <th>Categoría</th>
+                <th>Foto</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:if="${#lists.isEmpty(paginacion.content)}">
+                <td colspan="4" style="text-align:center;">
+                    No existen actividades registradas.
+                </td>
+            </tr>
+
+            <tr
+                    th:each="act : ${paginacion.content}"
+                    th:onclick="|window.location='@{/detalle/{id}(id=${act.id})}'|"
+                    style="cursor:pointer;">
+
+                <td th:text="${act.miembro.nombre}">
+                    Miembro
+                </td>
+
+                <td th:text="${act.nombre}">
+                    Actividad
+                </td>
+
+                <td>
+
+                    <span th:switch="${act.tipo}">
+
+                        <span th:case="'arte'">
+                            Artística
+                        </span>
+
+                        <span th:case="'deporte'">
+                            Deportiva
+                        </span>
+
+                        <span th:case="'tecnología'">
+                            Tecnológica
+                        </span>
+
+                        <span th:case="'social'">
+                            Social
+                        </span>
+
+                        <span th:case="'recreación'">
+                            Recreativa
+                        </span>
+
+                        <span
+                                th:case="*"
+                                th:text="${act.tipo}">
+                        </span>
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <img
+                            th:if="${act.fotos != null and !#lists.isEmpty(act.fotos)}"
+                            th:src="@{${act.fotos[0].rutaArchivo}}"
+                            alt="Foto"
+                            width="100">
+
+                    <span
+                            th:if="${act.fotos == null or #lists.isEmpty(act.fotos)}">
+                        Sin foto
+                    </span>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="pagination">
+
+            <a
+                    th:if="${paginacion.hasPrevious()}"
+                    th:href="@{/listado(
+                    page=${paginacion.number - 1},
+                    categoria=${categoria_actual},
+                    orden=${ordenActual}
+                )}">
+
+                <button type="button">
+                    Anterior
+                </button>
+
+            </a>
+
+            <button
+                    th:unless="${paginacion.hasPrevious()}"
+                    type="button"
+                    disabled>
+
+                Anterior
+
+            </button>
+
+            <span id="texto-pagina">
+
+                Página
+
+                <span th:text="${paginacion.number + 1}"></span>
+
+                de
+
+                <span th:text="${paginacion.totalPages == 0 ? 1 : paginacion.totalPages}"></span>
+
+            </span>
+
+            <a
+                    th:if="${paginacion.hasNext()}"
+                    th:href="@{/listado(
+                    page=${paginacion.number + 1},
+                    categoria=${categoria_actual},
+                    orden=${ordenActual}
+                )}">
+
+                <button type="button">
+                    Siguiente
+                </button>
+
+            </a>
+
+            <button
+                    th:unless="${paginacion.hasNext()}"
+                    type="button"
+                    disabled>
+
+                Siguiente
+
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8" >
 
@@ -7,11 +7,11 @@
 
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
+      th:href="@{/css/style.css}"
     />
 
     <!--A veces me tiraba error por número de solicitud a la página asi que descargué el js-->
-    <!--<script src="https://code.highcharts.com/highcharts.js"></script>-->
+    <!--<script th:src="@{/js/highcharts.js}"></script>-->
   </head>
 
   <body>
@@ -19,7 +19,7 @@
       <h1>Comunidad DCC</h1>
 
       <nav>
-        <a href="{{ url_for('index') }}">Inicio</a>
+        <a th:href="@{/}">Inicio</a>
       </nav>
     </header>
 
@@ -38,11 +38,11 @@
 
       <br>
 
-      <a href="{{ url_for('index') }}"> Volver a la portada </a>
+      <a th:href="@{/}"> Volver a la portada </a>
     </main>
 
     <!--Comentar si se desea acceder a highcharts desde la url-->
-    <script src="{{ url_for('static', filename='js/highcharts.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/estadisticas.js') }}"></script>
+    <script th:src="@{/js/highcharts.js}"></script>
+    <script th:src="@{/js/estadisticas.js}"></script>
   </body>
 </html>

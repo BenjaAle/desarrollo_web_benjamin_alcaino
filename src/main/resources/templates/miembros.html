@@ -1,38 +1,44 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Registro de Miembros</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<link rel="stylesheet" th:href="@{/css/style.css}"></head>
 <body>
     <header>
         <h1>Comunidad DCC</h1>
-        <nav>
-            <a href="{{ url_for('index') }}">Inicio</a>
-            <a href="{{ url_for('registrar_miembro') }}">Registro Miembros</a>
-            <a href="{{ url_for('registrar_actividad') }}">Registro Actividades</a>
-            <a href="{{ url_for('listado') }}">Listado Actividades</a>
-            <a href="{{ url_for('estadisticas') }}">Estadísticas</a>
-        </nav>
+
+      <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/registrar_miembro}">Registro Miembros</a>
+        <a th:href="@{/registrar_actividad}">Registro Actividades</a>
+        <a th:href="@{/listado}">Listado Actividades</a>
+        <a th:href="@{/estadisticas}">Estadísticas</a>
+        <a th:href="@{/buscador}">Buscador</a>
+      </nav>
     </header>
 
     <main>
         <section>
             <h2>Registro de Nuevo Miembro</h2>
+
             <p>Ingresa tus datos para ingresar. Todos los campos son obligatorios.</p>
             
-            {% if errores %}
-                <div style="color: red; margin-bottom: 15px;">
-                    <ul>
-                        {% for error in errores %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}           
+            <!-- Errores Spring -->
+            <div
+                th:if="${not #lists.isEmpty(errores)}"
+                style="color: red; margin-bottom: 15px;"
+            >
+                <ul>
+                    <li th:each="error : ${errores}"
+                        th:text="${error}">
+                    </li>
+                </ul>
+            </div>          
             
             <div id="errores-js" style="color: red; white-space: pre-line; margin-bottom: 15px; font-weight: bold;"></div>
-            <form action="{{ url_for('registrar_miembro') }}" method="POST" id="form-miembro">
+            
+            <form th:action="@{/registrar_miembro}" method="POST" id="form-miembro">
                 <label for="nombre-miembro">Nombre completo</label>
                 <input id="nombre-miembro" name="nombre" type="text" required>
                 
@@ -66,7 +72,7 @@
         </section>
     </main>
 
-    <script src="{{ url_for('static', filename='js/region_comuna.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/miembros.js') }}"></script>
+    <script th:src="@{/js/region_comuna.js}"></script>
+    <script th:src="@{/js/miembros.js}"></script>
 </body>
 </html>

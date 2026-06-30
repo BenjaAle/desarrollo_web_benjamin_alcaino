@@ -116,3 +116,40 @@ td {
     line-height: 1.6;
     margin-bottom: 15px;
 }
+/* Contenedores para notas */
+.contenedor-evaluar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.fila-inputs {
+    display: flex;
+    gap: 5px;
+}
+
+.input-nota-dinamico {
+    width: 50px;
+    padding: 2px;
+}
+
+.btn-guardar-nota {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.mensaje-error-nota {
+    color: red;
+    font-size: 12px;
+    display: none;
+}
+
+.mensaje-exito {
+    color: green;
+    font-weight: bold;
+}
